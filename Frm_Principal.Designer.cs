@@ -299,7 +299,7 @@
             Controls.Add(Btn_Remover);
             Controls.Add(Btn_Adicionar);
             Controls.Add(Lbl_Saldo);
-            Controls.Add(Txt_Salario);
+            Controls.Add(txtSalario);
             Controls.Add(Lbl_Idade);
             Controls.Add(Txt_Nome);
             Controls.Add(Lbl_Nome);
