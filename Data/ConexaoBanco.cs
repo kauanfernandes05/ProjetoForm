@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-namespace ProjetoForm;
+namespace ProjetoForm.Data;
 
 internal class ConexaoBanco
 {
     private static readonly string stringConexao =
-     @"Server=SEU_SERVIDOR;Database=SEU_BANCO;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+    @"Server=SEU-SERVIDOR;Database=SEU-BANCO;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
 
     public static SqlConnection CriarConexao()
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ProjetoForm;
+namespace ProjetoForm.Models;
 
 public class Cadastro
 {
@@ -32,7 +32,7 @@ public class Cadastro
     {
         get
         {
-            var beneficios = new System.Collections.Generic.List<string>();
+            var beneficios = new List<string>();
 
             if (ValeTransporte)
                 beneficios.Add("Vale-transporte");
