@@ -10,7 +10,7 @@ namespace ProjetoForm.Data;
 internal class ConexaoBanco
 {
     private static readonly string stringConexao =
-    @"Server=SEU-SERVIDOR;Database=SEU-BANCO;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+     @"Server=SEU-SERVIDOR;Database=SEU-BANCO;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
 
     public static SqlConnection CriarConexao()
     {

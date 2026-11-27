@@ -729,6 +729,7 @@ namespace ProjetoForm
             if (cadastrarOutro == DialogResult.Yes)
             {
                 LimparCampos();
+                DefinirSalvamento(false);
                 Txt_Nome.Focus();
             }
             else

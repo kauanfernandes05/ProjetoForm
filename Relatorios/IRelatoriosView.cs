@@ -16,7 +16,6 @@ public interface IRelatoriosView
     List<string> ObterCargosSelecionados();
 
     OrdenacaoRelatorio ObterOrdenacaoSelecionada();
-
     void DefinirCarregamento(bool carregando);
 
     void MostrarAviso(string mensagem);

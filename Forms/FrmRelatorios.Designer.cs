@@ -29,12 +29,20 @@
         private void InitializeComponent()
         {
             grpFiltros = new GroupBox();
+            chkFiltroTodos = new CheckBox();
+            lbTodos = new Label();
+            chkFiltroSaude = new CheckBox();
+            chkFiltroAlimentacao = new CheckBox();
+            chkFiltroTransporte = new CheckBox();
             grpOrdenacao = new GroupBox();
             rdbOrdenarSalario = new RadioButton();
             rdbOrdenarNascimento = new RadioButton();
             rdbOrdenarNome = new RadioButton();
             rdbOrdenarID = new RadioButton();
+            lbSaude = new Label();
             btnRemoveCargo = new Button();
+            lbTransporte = new Label();
+            lbAlimentacao = new Label();
             lstCargosSelecionados = new ListBox();
             lstSugestoesCargos = new ListBox();
             txtPesquisaCargo = new TextBox();
@@ -42,12 +50,6 @@
             btnFechar = new Button();
             btnLimparFiltros = new Button();
             btnGerarRelatorio = new Button();
-            cmbSaude = new ComboBox();
-            lbSaude = new Label();
-            cmbAlimentacao = new ComboBox();
-            lbAlimentacao = new Label();
-            cmbTransporte = new ComboBox();
-            lbTransporte = new Label();
             cmbSexo = new ComboBox();
             lbSexo = new Label();
             lbCargo = new Label();
@@ -77,8 +79,16 @@
             // 
             // grpFiltros
             // 
+            grpFiltros.Controls.Add(chkFiltroTodos);
+            grpFiltros.Controls.Add(lbTodos);
+            grpFiltros.Controls.Add(chkFiltroSaude);
+            grpFiltros.Controls.Add(chkFiltroAlimentacao);
+            grpFiltros.Controls.Add(chkFiltroTransporte);
             grpFiltros.Controls.Add(grpOrdenacao);
+            grpFiltros.Controls.Add(lbSaude);
             grpFiltros.Controls.Add(btnRemoveCargo);
+            grpFiltros.Controls.Add(lbTransporte);
+            grpFiltros.Controls.Add(lbAlimentacao);
             grpFiltros.Controls.Add(lstCargosSelecionados);
             grpFiltros.Controls.Add(lstSugestoesCargos);
             grpFiltros.Controls.Add(txtPesquisaCargo);
@@ -86,12 +96,6 @@
             grpFiltros.Controls.Add(btnFechar);
             grpFiltros.Controls.Add(btnLimparFiltros);
             grpFiltros.Controls.Add(btnGerarRelatorio);
-            grpFiltros.Controls.Add(cmbSaude);
-            grpFiltros.Controls.Add(lbSaude);
-            grpFiltros.Controls.Add(cmbAlimentacao);
-            grpFiltros.Controls.Add(lbAlimentacao);
-            grpFiltros.Controls.Add(cmbTransporte);
-            grpFiltros.Controls.Add(lbTransporte);
             grpFiltros.Controls.Add(cmbSexo);
             grpFiltros.Controls.Add(lbSexo);
             grpFiltros.Controls.Add(lbCargo);
@@ -112,10 +116,55 @@
             grpFiltros.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             grpFiltros.Location = new Point(12, 12);
             grpFiltros.Name = "grpFiltros";
-            grpFiltros.Size = new Size(955, 438);
+            grpFiltros.Size = new Size(955, 452);
             grpFiltros.TabIndex = 0;
             grpFiltros.TabStop = false;
             grpFiltros.Text = "Filtros do relatório";
+            // 
+            // chkFiltroTodos
+            // 
+            chkFiltroTodos.AutoSize = true;
+            chkFiltroTodos.Location = new Point(489, 358);
+            chkFiltroTodos.Name = "chkFiltroTodos";
+            chkFiltroTodos.Size = new Size(15, 14);
+            chkFiltroTodos.TabIndex = 37;
+            chkFiltroTodos.UseVisualStyleBackColor = true;
+            // 
+            // lbTodos
+            // 
+            lbTodos.AutoSize = true;
+            lbTodos.Location = new Point(418, 354);
+            lbTodos.Name = "lbTodos";
+            lbTodos.Size = new Size(66, 21);
+            lbTodos.TabIndex = 36;
+            lbTodos.Text = "Todos: ";
+            // 
+            // chkFiltroSaude
+            // 
+            chkFiltroSaude.AutoSize = true;
+            chkFiltroSaude.Location = new Point(576, 323);
+            chkFiltroSaude.Name = "chkFiltroSaude";
+            chkFiltroSaude.Size = new Size(15, 14);
+            chkFiltroSaude.TabIndex = 35;
+            chkFiltroSaude.UseVisualStyleBackColor = true;
+            // 
+            // chkFiltroAlimentacao
+            // 
+            chkFiltroAlimentacao.AutoSize = true;
+            chkFiltroAlimentacao.Location = new Point(576, 282);
+            chkFiltroAlimentacao.Name = "chkFiltroAlimentacao";
+            chkFiltroAlimentacao.Size = new Size(15, 14);
+            chkFiltroAlimentacao.TabIndex = 34;
+            chkFiltroAlimentacao.UseVisualStyleBackColor = true;
+            // 
+            // chkFiltroTransporte
+            // 
+            chkFiltroTransporte.AutoSize = true;
+            chkFiltroTransporte.Location = new Point(576, 243);
+            chkFiltroTransporte.Name = "chkFiltroTransporte";
+            chkFiltroTransporte.Size = new Size(15, 14);
+            chkFiltroTransporte.TabIndex = 33;
+            chkFiltroTransporte.UseVisualStyleBackColor = true;
             // 
             // grpOrdenacao
             // 
@@ -123,7 +172,7 @@
             grpOrdenacao.Controls.Add(rdbOrdenarNascimento);
             grpOrdenacao.Controls.Add(rdbOrdenarNome);
             grpOrdenacao.Controls.Add(rdbOrdenarID);
-            grpOrdenacao.Location = new Point(361, 230);
+            grpOrdenacao.Location = new Point(691, 230);
             grpOrdenacao.Name = "grpOrdenacao";
             grpOrdenacao.Size = new Size(255, 147);
             grpOrdenacao.TabIndex = 32;
@@ -174,6 +223,16 @@
             rdbOrdenarID.Text = "ID Crescente";
             rdbOrdenarID.UseVisualStyleBackColor = true;
             // 
+            // lbSaude
+            // 
+            lbSaude.AutoSize = true;
+            lbSaude.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbSaude.Location = new Point(418, 318);
+            lbSaude.Name = "lbSaude";
+            lbSaude.Size = new Size(133, 21);
+            lbSaude.TabIndex = 22;
+            lbSaude.Text = "Plano de saúde:";
+            // 
             // btnRemoveCargo
             // 
             btnRemoveCargo.BackColor = Color.Red;
@@ -187,13 +246,33 @@
             btnRemoveCargo.UseVisualStyleBackColor = false;
             btnRemoveCargo.Click += btnRemoveCargo_Click;
             // 
+            // lbTransporte
+            // 
+            lbTransporte.AutoSize = true;
+            lbTransporte.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTransporte.Location = new Point(418, 239);
+            lbTransporte.Name = "lbTransporte";
+            lbTransporte.Size = new Size(140, 21);
+            lbTransporte.TabIndex = 18;
+            lbTransporte.Text = "Vale-Transporte:";
+            // 
+            // lbAlimentacao
+            // 
+            lbAlimentacao.AutoSize = true;
+            lbAlimentacao.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbAlimentacao.Location = new Point(418, 278);
+            lbAlimentacao.Name = "lbAlimentacao";
+            lbAlimentacao.Size = new Size(152, 21);
+            lbAlimentacao.TabIndex = 20;
+            lbAlimentacao.Text = "Vale-Alimentação:";
+            // 
             // lstCargosSelecionados
             // 
             lstCargosSelecionados.FormattingEnabled = true;
             lstCargosSelecionados.ItemHeight = 21;
-            lstCargosSelecionados.Location = new Point(707, 84);
+            lstCargosSelecionados.Location = new Point(707, 83);
             lstCargosSelecionados.Name = "lstCargosSelecionados";
-            lstCargosSelecionados.Size = new Size(242, 109);
+            lstCargosSelecionados.Size = new Size(242, 130);
             lstCargosSelecionados.TabIndex = 30;
             lstCargosSelecionados.Visible = false;
             // 
@@ -232,7 +311,7 @@
             btnFechar.FlatStyle = FlatStyle.Flat;
             btnFechar.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnFechar.ForeColor = SystemColors.ControlText;
-            btnFechar.Location = new Point(833, 371);
+            btnFechar.Location = new Point(833, 380);
             btnFechar.Name = "btnFechar";
             btnFechar.Size = new Size(116, 61);
             btnFechar.TabIndex = 26;
@@ -247,7 +326,7 @@
             btnLimparFiltros.FlatStyle = FlatStyle.Flat;
             btnLimparFiltros.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLimparFiltros.ForeColor = SystemColors.ControlText;
-            btnLimparFiltros.Location = new Point(157, 371);
+            btnLimparFiltros.Location = new Point(157, 380);
             btnLimparFiltros.Name = "btnLimparFiltros";
             btnLimparFiltros.Size = new Size(131, 61);
             btnLimparFiltros.TabIndex = 25;
@@ -261,7 +340,7 @@
             btnGerarRelatorio.Cursor = Cursors.Hand;
             btnGerarRelatorio.FlatStyle = FlatStyle.Flat;
             btnGerarRelatorio.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnGerarRelatorio.Location = new Point(7, 371);
+            btnGerarRelatorio.Location = new Point(7, 380);
             btnGerarRelatorio.Name = "btnGerarRelatorio";
             btnGerarRelatorio.Size = new Size(144, 61);
             btnGerarRelatorio.TabIndex = 24;
@@ -269,76 +348,13 @@
             btnGerarRelatorio.UseVisualStyleBackColor = false;
             btnGerarRelatorio.Click += btnGerarRelatorio_Click;
             // 
-            // cmbSaude
-            // 
-            cmbSaude.Cursor = Cursors.Hand;
-            cmbSaude.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSaude.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            cmbSaude.FormattingEnabled = true;
-            cmbSaude.Location = new Point(794, 325);
-            cmbSaude.Name = "cmbSaude";
-            cmbSaude.Size = new Size(157, 29);
-            cmbSaude.TabIndex = 23;
-            // 
-            // lbSaude
-            // 
-            lbSaude.AutoSize = true;
-            lbSaude.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbSaude.Location = new Point(638, 325);
-            lbSaude.Name = "lbSaude";
-            lbSaude.Size = new Size(133, 21);
-            lbSaude.TabIndex = 22;
-            lbSaude.Text = "Plano de saúde:";
-            // 
-            // cmbAlimentacao
-            // 
-            cmbAlimentacao.Cursor = Cursors.Hand;
-            cmbAlimentacao.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbAlimentacao.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            cmbAlimentacao.FormattingEnabled = true;
-            cmbAlimentacao.Location = new Point(794, 286);
-            cmbAlimentacao.Name = "cmbAlimentacao";
-            cmbAlimentacao.Size = new Size(157, 29);
-            cmbAlimentacao.TabIndex = 21;
-            // 
-            // lbAlimentacao
-            // 
-            lbAlimentacao.AutoSize = true;
-            lbAlimentacao.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbAlimentacao.Location = new Point(636, 289);
-            lbAlimentacao.Name = "lbAlimentacao";
-            lbAlimentacao.Size = new Size(152, 21);
-            lbAlimentacao.TabIndex = 20;
-            lbAlimentacao.Text = "Vale-Alimentação:";
-            // 
-            // cmbTransporte
-            // 
-            cmbTransporte.Cursor = Cursors.Hand;
-            cmbTransporte.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbTransporte.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            cmbTransporte.FormattingEnabled = true;
-            cmbTransporte.Location = new Point(794, 247);
-            cmbTransporte.Name = "cmbTransporte";
-            cmbTransporte.Size = new Size(157, 29);
-            cmbTransporte.TabIndex = 19;
-            // 
-            // lbTransporte
-            // 
-            lbTransporte.AutoSize = true;
-            lbTransporte.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTransporte.Location = new Point(636, 250);
-            lbTransporte.Name = "lbTransporte";
-            lbTransporte.Size = new Size(140, 21);
-            lbTransporte.TabIndex = 18;
-            lbTransporte.Text = "Vale-Transporte:";
-            // 
             // cmbSexo
             // 
             cmbSexo.Cursor = Cursors.Hand;
             cmbSexo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSexo.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             cmbSexo.FormattingEnabled = true;
-            cmbSexo.Location = new Point(707, 200);
+            cmbSexo.Location = new Point(78, 239);
             cmbSexo.Name = "cmbSexo";
             cmbSexo.Size = new Size(242, 29);
             cmbSexo.TabIndex = 17;
@@ -347,7 +363,7 @@
             // 
             lbSexo.AutoSize = true;
             lbSexo.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbSexo.Location = new Point(636, 203);
+            lbSexo.Location = new Point(7, 242);
             lbSexo.Name = "lbSexo";
             lbSexo.Size = new Size(51, 21);
             lbSexo.TabIndex = 16;
@@ -367,7 +383,7 @@
             // 
             txtSalarioMax.Cursor = Cursors.Hand;
             txtSalarioMax.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtSalarioMax.Location = new Point(147, 278);
+            txtSalarioMax.Location = new Point(147, 316);
             txtSalarioMax.Name = "txtSalarioMax";
             txtSalarioMax.Size = new Size(174, 29);
             txtSalarioMax.TabIndex = 13;
@@ -376,7 +392,7 @@
             // 
             txtSalarioMin.Cursor = Cursors.Hand;
             txtSalarioMin.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtSalarioMin.Location = new Point(147, 242);
+            txtSalarioMin.Location = new Point(147, 280);
             txtSalarioMin.Name = "txtSalarioMin";
             txtSalarioMin.Size = new Size(174, 29);
             txtSalarioMin.TabIndex = 12;
@@ -385,7 +401,7 @@
             // 
             lbSalarioMax.AutoSize = true;
             lbSalarioMax.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbSalarioMax.Location = new Point(5, 281);
+            lbSalarioMax.Location = new Point(5, 319);
             lbSalarioMax.Name = "lbSalarioMax";
             lbSalarioMax.Size = new Size(136, 21);
             lbSalarioMax.TabIndex = 11;
@@ -395,7 +411,7 @@
             // 
             lbSalarioMin.AutoSize = true;
             lbSalarioMin.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbSalarioMin.Location = new Point(7, 242);
+            lbSalarioMin.Location = new Point(7, 280);
             lbSalarioMin.Name = "lbSalarioMin";
             lbSalarioMin.Size = new Size(134, 21);
             lbSalarioMin.TabIndex = 10;
@@ -509,7 +525,7 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { TspEsc, TspF2, TspF4, tspDel });
-            statusStrip1.Location = new Point(0, 453);
+            statusStrip1.Location = new Point(0, 464);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(979, 26);
             statusStrip1.TabIndex = 1;
@@ -548,7 +564,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(979, 479);
+            ClientSize = new Size(979, 490);
             Controls.Add(statusStrip1);
             Controls.Add(grpFiltros);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -582,11 +598,8 @@
         private Label lbSalarioMin;
         private Label lbDataFinal;
         private DateTimePicker dtpNascimentoFinal;
-        private ComboBox cmbSaude;
         private Label lbSaude;
-        private ComboBox cmbAlimentacao;
         private Label lbAlimentacao;
-        private ComboBox cmbTransporte;
         private Label lbTransporte;
         private ComboBox cmbSexo;
         private Label lbSexo;
@@ -611,5 +624,10 @@
         private RadioButton rdbOrdenarNome;
         private RadioButton rdbOrdenarID;
         private RadioButton rdbOrdenarSalario;
+        private CheckBox chkFiltroTransporte;
+        private CheckBox chkFiltroSaude;
+        private CheckBox chkFiltroAlimentacao;
+        private Label lbTodos;
+        private CheckBox chkFiltroTodos;
     }
 }

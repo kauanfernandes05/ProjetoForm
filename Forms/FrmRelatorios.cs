@@ -25,17 +25,20 @@ namespace ProjetoForm
         private readonly FiltroRelatorioValidator filtroValidator = new FiltroRelatorioValidator();
         private readonly RelatoriosPresenter presenter;
         private readonly List<string> cargosRelatorio = new List<string>();
+        private bool atualizandoBeneficios;
         private bool selecionandoCargoRelatorio;
         private int parteDataFiltro = 0;
         private bool formatandoSalario;
         public FrmRelatorios()
         {
             InitializeComponent();
-            presenter = new RelatoriosPresenter(this,new RelatorioService());
+            presenter = new RelatoriosPresenter(this, new RelatorioService());
+           
 
             ConfigurarFiltros();
             ConfigurarNavegacao();
             ConfigurarPesquisaCargos();
+            ConfigurarCheckBoxesBeneficios();
 
             Shown -= FrmRelatorios_Shown;
             Shown += FrmRelatorios_Shown;
@@ -72,7 +75,7 @@ namespace ProjetoForm
         }
         private void txtNome_KeyPress(object? sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == 'º' || e.KeyChar == '°' || e.KeyChar == 'ª')
+            if (e.KeyChar == 'º' || e.KeyChar == '°' || e.KeyChar == 'ª')
             {
                 e.Handled = true;
                 return;
@@ -221,7 +224,7 @@ namespace ProjetoForm
                     }
                     else
                     {
-                        txtSalarioMin.Focus();
+                        cmbSexo.Focus();
                     }
 
                     return;
@@ -234,33 +237,34 @@ namespace ProjetoForm
             e.Handled = true;
             e.SuppressKeyPress = true;
 
-            if (sender == cmbSaude)
+            // Depois dos benefícios, vai para a ordenação marcada.
+            if (sender == chkFiltroTodos)
             {
-                cmbSaude.DroppedDown = false;
-
                 RadioButton selecionado = grpOrdenacao.Controls
                     .OfType<RadioButton>()
                     .FirstOrDefault(radio => radio.Checked)
                     ?? rdbOrdenarID;
+
                 selecionado.Focus();
                 return;
             }
 
+            // Esta sequência precisa ficar fora do if acima.
             Control[] sequencia =
             {
                 txtIdInicial,
                 txtIdFinal,
                 txtNome,
+                txtPesquisaCargo,
                 dtpNascimentoInicial,
                 dtpNascimentoFinal,
+                cmbSexo,
                 txtSalarioMin,
                 txtSalarioMax,
-                txtPesquisaCargo,
-                cmbSexo,
-                cmbTransporte,
-                cmbAlimentacao,
-                cmbSaude,
-                btnGerarRelatorio
+                chkFiltroTransporte,
+                chkFiltroAlimentacao,
+                chkFiltroSaude,
+                chkFiltroTodos
             };
 
             for (int i = 0; i < sequencia.Length - 1; i++)
@@ -275,6 +279,7 @@ namespace ProjetoForm
                 }
             }
         }
+
         private void Ordenacao_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
@@ -306,12 +311,13 @@ namespace ProjetoForm
                 txtNome,
                 dtpNascimentoInicial,
                 dtpNascimentoFinal,
+                cmbSexo,
                 txtSalarioMin,
                 txtSalarioMax,
-                cmbSexo,
-                cmbTransporte,
-                cmbAlimentacao,
-                cmbSaude
+                chkFiltroTransporte,
+                chkFiltroAlimentacao,
+                chkFiltroSaude,
+                chkFiltroTodos
             };
 
             foreach (Control campo in campos)
@@ -322,11 +328,23 @@ namespace ProjetoForm
 
             Control[] ordemTab =
             {
-                txtIdInicial, txtIdFinal, txtNome,
-                dtpNascimentoInicial, dtpNascimentoFinal,
-                txtSalarioMin, txtSalarioMax, txtPesquisaCargo,
-                cmbSexo, cmbTransporte, cmbAlimentacao, cmbSaude,
-                btnGerarRelatorio, btnLimparFiltros, btnFechar
+                txtIdInicial,
+                txtIdFinal,
+                txtNome,
+                txtPesquisaCargo,
+                dtpNascimentoInicial,
+                dtpNascimentoFinal,
+                cmbSexo,
+                txtSalarioMin,
+                txtSalarioMax,
+                chkFiltroTransporte,
+                chkFiltroAlimentacao,
+                chkFiltroSaude,
+                chkFiltroTodos,
+                grpOrdenacao,
+                btnGerarRelatorio,
+                btnLimparFiltros,
+                btnFechar
             };
 
             for (int i = 0; i < ordemTab.Length; i++)
@@ -340,19 +358,24 @@ namespace ProjetoForm
 
             ComboBox[] combos =
             {
-                cmbSexo,
-                cmbTransporte,
-                cmbAlimentacao,
-                cmbSaude
+                cmbSexo
             };
 
-            foreach (ComboBox combo in combos)
+            CheckBox[] beneficios =
             {
-                combo.Enter -= ComboFiltro_Enter;
-                combo.Enter += ComboFiltro_Enter;
+                chkFiltroTransporte,
+                chkFiltroAlimentacao,
+                chkFiltroSaude,
+                chkFiltroTodos
+            };
 
-                combo.Leave -= ComboFiltro_Leave;
-                combo.Leave += ComboFiltro_Leave;
+            foreach (CheckBox campo in beneficios)
+            {
+                campo.Enter -= ComboFiltro_Enter;
+                campo.Enter += ComboFiltro_Enter;
+
+                campo.Leave -= ComboFiltro_Leave;
+                campo.Leave += ComboFiltro_Leave;
             }
 
             grpFiltros.Paint -= DesenharFocoCombos;
@@ -377,6 +400,8 @@ namespace ProjetoForm
                 radio.KeyDown -= Ordenacao_KeyDown;
                 radio.KeyDown += Ordenacao_KeyDown;
             }
+
+
         }
         private void ConfigurarFiltros()
         {
@@ -398,29 +423,6 @@ namespace ProjetoForm
             });
 
             cmbSexo.SelectedIndex = 0;
-
-            // Benefícios.
-            ComboBox[] beneficios =
-            {
-                cmbTransporte,
-                cmbAlimentacao,
-                cmbSaude
-            };
-
-            foreach (ComboBox campo in beneficios)
-            {
-                campo.DropDownStyle = ComboBoxStyle.DropDownList;
-                campo.Items.Clear();
-
-                campo.Items.AddRange(new string[]
-                {
-                "Todos",
-                "Possui",
-                "Não possui"
-                });
-
-                campo.SelectedIndex = 0;
-            }
 
             // Datas opcionais.
             dtpNascimentoInicial.Format = DateTimePickerFormat.Custom;
@@ -458,9 +460,10 @@ namespace ProjetoForm
 
             foreach (Control controle in container.Controls)
             {
-                if (controle is ComboBox combo && combo.Focused)
+                if ((controle is ComboBox || controle is CheckBox) &&
+                    controle.Focused)
                 {
-                    Rectangle borda = combo.Bounds;
+                    Rectangle borda = controle.Bounds;
                     borda.Inflate(3, 3);
 
                     ControlPaint.DrawFocusRectangle(
@@ -528,13 +531,11 @@ namespace ProjetoForm
             lstCargosSelecionados.Visible = false;
             parteDataFiltro = 0;
             cmbSexo.SelectedIndex = 0;
-            cmbTransporte.SelectedIndex = 0;
-            cmbAlimentacao.SelectedIndex = 0;
-            cmbSaude.SelectedIndex = 0;
 
             dtpNascimentoInicial.Checked = false;
             dtpNascimentoFinal.Checked = false;
             rdbOrdenarID.Checked = true;
+            ReiniciarBeneficios();
             txtIdInicial.Focus();
         }
         private void btnLimparFiltros_Click(object? sender, EventArgs e)
@@ -657,18 +658,18 @@ namespace ProjetoForm
 
             if (!filtroValidator.ValidarIntervaloIds(idInicial, idFinal))
             {
-                MessageBox.Show("O ID inicial não pode ser maior que o ID final." );
+                MessageBox.Show("O ID inicial não pode ser maior que o ID final.");
 
                 txtIdInicial.Focus();
                 return false;
             }
 
-            if (!LerSalarioOpcional(txtSalarioMin,out decimal? salarioMinimo))
+            if (!LerSalarioOpcional(txtSalarioMin, out decimal? salarioMinimo))
             {
                 return false;
             }
 
-            if (!LerSalarioOpcional(txtSalarioMax,out decimal? salarioMaximo))
+            if (!LerSalarioOpcional(txtSalarioMax, out decimal? salarioMaximo))
             {
                 return false;
             }
@@ -683,38 +684,25 @@ namespace ProjetoForm
                 return false;
             }
 
-            DateTime? nascimentoInicial = dtpNascimentoInicial.Checked? dtpNascimentoInicial.Value.Date: null;
+            DateTime? nascimentoInicial = dtpNascimentoInicial.Checked ? dtpNascimentoInicial.Value.Date : null;
 
-            DateTime? nascimentoFinal = dtpNascimentoFinal.Checked ? dtpNascimentoFinal.Value.Date: null;
+            DateTime? nascimentoFinal = dtpNascimentoFinal.Checked ? dtpNascimentoFinal.Value.Date : null;
 
             if (!filtroValidator.ValidarIntervaloData(nascimentoInicial, nascimentoFinal))
             {
-                MessageBox.Show( "A data inicial não pode ser posterior à data final.");
+                MessageBox.Show("A data inicial não pode ser posterior à data final.");
 
                 dtpNascimentoInicial.Focus();
                 return false;
             }
 
             // As opções devem ter sido inicializadas pelo ConfigurarFiltros().
-            ComboBox[] opcoes =
-            {
-                cmbSexo,
-                cmbTransporte,
-                cmbAlimentacao,
-                cmbSaude
-            };
 
-            foreach (ComboBox campo in opcoes)
+            if (cmbSexo.SelectedIndex < 0)
             {
-                if (campo.SelectedIndex < 0)
-                {
-                    MessageBox.Show(
-                        "Selecione uma opção ou escolha Todos."
-                    );
-
-                    campo.Focus();
-                    return false;
-                }
+                MessageBox.Show("Selecione uma opção de sexo ou escolha Todos.");
+                cmbSexo.Focus();
+                return false;
             }
 
             filtro.IdInicial = idInicial;
@@ -734,33 +722,18 @@ namespace ProjetoForm
                 ? null
                 : cmbSexo.SelectedItem?.ToString();
 
-            filtro.ValeTransporte = cmbTransporte.SelectedIndex switch
-            {
-                1 => true,
-                2 => false,
-                _ => null
-            };
+            filtro.ValeTransporte = chkFiltroTodos.Checked ? (bool?)null:chkFiltroTransporte.Checked;
 
-            filtro.ValeAlimentacao = cmbAlimentacao.SelectedIndex switch
-            {
-                1 => true,
-                2 => false,
-                _ => null
-            };
+            filtro.ValeAlimentacao = chkFiltroTodos.Checked? (bool?)null:chkFiltroAlimentacao.Checked;
 
-            filtro.PlanoSaude = cmbSaude.SelectedIndex switch
-            {
-                1 => true,
-                2 => false,
-                _ => null
-            };
+            filtro.PlanoSaude = chkFiltroTodos.Checked? (bool?)null:chkFiltroSaude.Checked;
 
             return true;
         }
 
-        private async void btnGerarRelatorio_Click(object? sender,EventArgs e)
+        private async void btnGerarRelatorio_Click(object? sender, EventArgs e)
         {
-            if (!btnGerarRelatorio.Enabled)return;
+            if (!btnGerarRelatorio.Enabled) return;
 
             await presenter.GerarRelatorioAsync();
         }
@@ -850,7 +823,7 @@ namespace ProjetoForm
                 }
                 else if (string.IsNullOrWhiteSpace(txtPesquisaCargo.Text))
                 {
-                    cmbSexo.Focus();
+                    dtpNascimentoInicial.Focus();
                 }
                 else
                 {
@@ -954,20 +927,24 @@ namespace ProjetoForm
                 case Keys.Escape:
                     btnFechar.PerformClick();
                     return true;
-                   
+
                 case Keys.F2:
                     btnGerarRelatorio.PerformClick();
                     return true;
-                    
+
                 case Keys.F4:
                     btnLimparFiltros.PerformClick();
                     return true;
-                    
+
 
                 case Keys.Delete:
-                    btnRemoveCargo.PerformClick();
-                    return true;
-                   
+                    if (lstCargosSelecionados.Focused && lstCargosSelecionados.SelectedIndex >= 0)
+                    {
+                        btnRemoveCargo.PerformClick();
+                        return true;
+                    }
+                    break;
+
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -997,7 +974,7 @@ namespace ProjetoForm
 
             if (lstCargosSelecionados.Items.Count > 0)
             {
-                lstCargosSelecionados.SelectedIndex = Math.Min(indice,lstCargosSelecionados.Items.Count - 1);
+                lstCargosSelecionados.SelectedIndex = Math.Min(indice, lstCargosSelecionados.Items.Count - 1);
             }
             else
             {
@@ -1044,19 +1021,19 @@ namespace ProjetoForm
 
         public void MostrarAviso(String mensagem)
         {
-            if(IsDisposed || Disposing) return;
+            if (IsDisposed || Disposing) return;
 
             MessageBox.Show(this, mensagem, "Relatório", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public void MostrarErro(string mensagem)
         {
-            if(IsDisposed || Disposing) {return;}
+            if (IsDisposed || Disposing) { return; }
 
             MessageBox.Show(this, mensagem, "Erro ao consultar", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public void ExibirPrevia(List<Cadastro> registros,FiltroRelatorio filtro,List<string> cargosSelecionados)
+        public void ExibirPrevia(List<Cadastro> registros, FiltroRelatorio filtro, List<string> cargosSelecionados)
         {
             if (IsDisposed || Disposing) return;
 
@@ -1064,7 +1041,103 @@ namespace ProjetoForm
 
             var relatorio = new RelatorioCadastros();
 
-            relatorio.AbrirPreviaRelatorio(this,registros,filtro,cargosSelecionados);
+            relatorio.AbrirPreviaRelatorio(this, registros, filtro, cargosSelecionados);
+        }
+
+        private void ConfigurarCheckBoxesBeneficios()
+        {
+            chkFiltroTodos.CheckedChanged -= FiltroTodos_CheckedChanged;
+            chkFiltroTodos.CheckedChanged += FiltroTodos_CheckedChanged;
+
+            CheckBox[] beneficios =
+            {
+                chkFiltroTransporte,
+                chkFiltroAlimentacao,
+                chkFiltroSaude
+            };
+
+            foreach (CheckBox beneficio in beneficios)
+            {
+                beneficio.CheckedChanged -= FiltroBeneficio_CheckedChanged;
+                beneficio.CheckedChanged += FiltroBeneficio_CheckedChanged;
+            }
+
+            ReiniciarBeneficios();
+        }
+
+        private void ReiniciarBeneficios()
+        {
+            atualizandoBeneficios = true;
+
+            try
+            {
+                chkFiltroTransporte.Checked = false;
+                chkFiltroAlimentacao.Checked = false;
+                chkFiltroSaude.Checked = false;
+
+                chkFiltroTodos.Checked = true;
+            }
+            finally
+            {
+                atualizandoBeneficios = false;
+            }
+        }
+
+        private void FiltroTodos_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (atualizandoBeneficios)
+                return;
+
+            atualizandoBeneficios = true;
+
+            try
+            {
+                if (chkFiltroTodos.Checked)
+                {
+                    chkFiltroTransporte.Checked = false;
+                    chkFiltroAlimentacao.Checked = false;
+                    chkFiltroSaude.Checked = false;
+                }
+                else
+                {
+                    // Não deixa todas as opções vazias.
+                    bool algumMarcado =
+                        chkFiltroTransporte.Checked ||
+                        chkFiltroAlimentacao.Checked ||
+                        chkFiltroSaude.Checked;
+
+                    if (!algumMarcado)
+                        chkFiltroTodos.Checked = true;
+                }
+            }
+            finally
+            {
+                atualizandoBeneficios = false;
+            }
+        }
+
+        private void FiltroBeneficio_CheckedChanged(
+            object? sender,
+            EventArgs e)
+        {
+            if (atualizandoBeneficios)
+                return;
+
+            atualizandoBeneficios = true;
+
+            try
+            {
+                bool algumMarcado =
+                    chkFiltroTransporte.Checked ||
+                    chkFiltroAlimentacao.Checked ||
+                    chkFiltroSaude.Checked;
+
+                chkFiltroTodos.Checked = !algumMarcado;
+            }
+            finally
+            {
+                atualizandoBeneficios = false;
+            }
         }
     }
 }
